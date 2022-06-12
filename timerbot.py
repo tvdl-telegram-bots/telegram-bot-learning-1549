@@ -19,6 +19,7 @@ bot.
 """
 
 import logging
+from turtle import update
 
 from telegram import Update
 from telegram.ext import Application, CallbackContext, CommandHandler
@@ -85,19 +86,28 @@ async def unset(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     text = "Timer successfully cancelled!" if job_removed else "You have no active timer."
     await update.message.reply_text(text)
 
+async def test(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
+    print(update.message.chat.id)
+    await update.message.reply_text("Your id is : " + str(update.message.chat.id))
+    await update.message.reply_text("Your first name is : " + str(update.message.chat.first_name))
+    await update.message.reply_text("Your last name is : " + str(update.message.chat.last_name))
+
+
 
 def main() -> None:
     """Run bot."""
     # Create the Application and pass it your bot's token.
-    application = Application.builder().token("TOKEN").build()
+    application = Application.builder().token("5400071880:AAH5dhWMOtr1cd4-PaqeAVx1K2X2r6GMEuc").build()
 
     # on different commands - answer in Telegram
+    application.add_handler(CommandHandler("test", test))
     application.add_handler(CommandHandler(["start", "help"], start))
     application.add_handler(CommandHandler("set", set_timer))
     application.add_handler(CommandHandler("unset", unset))
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
+
 
 
 if __name__ == "__main__":

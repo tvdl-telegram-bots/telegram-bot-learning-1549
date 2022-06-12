@@ -64,6 +64,8 @@ def main() -> None:
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
 
+user = update.message.from_user()
+print('You talk with user {} and his user id {} ' .format(user['username'], user['id']))    
 
 if __name__ == "__main__":
     main()
