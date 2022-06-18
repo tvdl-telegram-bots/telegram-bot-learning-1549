@@ -48,6 +48,38 @@ async def echo(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     """Echo the user message."""
     await update.message.reply_text(update.message.text)
 
+dict = {}
+
+async def setkey(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
+    user_mess = (update.message.text)
+    i = user_mess.find('=')
+    key = user_mess[5:i]
+    value = user_mess[i+1:]
+    dict.update({key : value})
+    print(key, value)
+    print(i)
+
+async def getkey(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
+        user_mess = (update.message.text)
+        x = user_mess.split(' ')
+        i = dict.get(x[1])
+        try: 
+            await update.message.reply_text(i)
+        except:
+            await update.message.reply_text("key not found")
+
+async def delkey(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
+    user_mess = (update.message.text)
+    x = user_mess.split(' ')
+    i = dict.get(x[1])
+    try:
+        del dict[x[1]]
+        await update.message.reply_text("Delete sucess")
+    except:
+        await update.message.reply_text("Key not found")
+        
+        
+
 async def info(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     await update.message.reply_text("Your id is : " + str(update.message.chat.id))
     await update.message.reply_text("Your first name is : " + str(update.message.chat.first_name))
@@ -62,6 +94,10 @@ def main() -> None:
     application.add_handler(CommandHandler("info", info))
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("set", setkey))
+    application.add_handler(CommandHandler("get", getkey))
+    application.add_handler(CommandHandler("del", delkey))
+
 
     # on non command i.e message - echo the message on Telegram
     application.add_handler(MessageHandler(
