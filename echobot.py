@@ -15,6 +15,7 @@ Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
 
+from distutils.log import info
 import logging
 
 from telegram import ForceReply, Update
@@ -47,6 +48,10 @@ async def echo(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     """Echo the user message."""
     await update.message.reply_text(update.message.text)
 
+async def info(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
+    await update.message.reply_text("Your id is : " + str(update.message.chat.id))
+    await update.message.reply_text("Your first name is : " + str(update.message.chat.first_name))
+    await update.message.reply_text("Your last name is : " + str(update.message.chat.last_name))
 
 def main() -> None:
     """Start the bot."""
@@ -54,6 +59,7 @@ def main() -> None:
     application = Application.builder().token("5400071880:AAH5dhWMOtr1cd4-PaqeAVx1K2X2r6GMEuc").build()
 
     # on different commands - answer in Telegram
+    application.add_handler(CommandHandler("info", info))
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
 
@@ -64,8 +70,7 @@ def main() -> None:
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
 
-user = update.message.from_user()
-print('You talk with user {} and his user id {} ' .format(user['username'], user['id']))    
+
 
 if __name__ == "__main__":
     main()

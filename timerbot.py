@@ -87,7 +87,6 @@ async def unset(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
     await update.message.reply_text(text)
 
 async def test(update: Update, context: CallbackContext.DEFAULT_TYPE) -> None:
-    print(update.message.chat.id)
     await update.message.reply_text("Your id is : " + str(update.message.chat.id))
     await update.message.reply_text("Your first name is : " + str(update.message.chat.first_name))
     await update.message.reply_text("Your last name is : " + str(update.message.chat.last_name))
